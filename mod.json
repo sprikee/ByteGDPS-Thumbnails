@@ -1,0 +1,182 @@
+{
+    "geode": "5.7.1",
+    "gd": {
+        "win": "2.2081",
+        "android": "2.2081",
+        "mac": "2.2081",
+        "ios": "2.2081"
+    },
+    "version": "v2.6.0",
+    "id": "bytegdps.thumbnails",
+    "name": "ByteGDPS Thumbnails",
+    "developer": "ByteGDPS",
+    "links": {
+        "homepage": "https://bytegdps.ru",
+        "source": "https://github.com/sprikee/ByteGDPS-Thumbnails"
+    },
+    "description": "Level thumbnails for ByteGDPS.",
+    "resources": {
+        "sprites": [
+            "resources/noThumb.png"
+        ],
+        "spritesheets": {
+            "LT_Sheet": [
+                "resources/LT_Badge_Owner.png",
+                "resources/LT_Badge_THE.png",
+                "resources/LT_Badge_ThumbnailAdmin.png",
+                "resources/LT_Badge_ThumbnailMod.png",
+                "resources/LT_Badge_VerThumbnailer.png",
+                "resources/thumbnailButton.png"
+            ]
+        },
+        "files": [
+            "resources/submission_rules.md"
+        ]
+    },
+    "settings": {
+        "thumb-role-badges": {
+            "name": "Enable Badges",
+            "description": "Enables role badges on the profiles of mod users, turn this off if you don't want to see them.",
+            "type": "bool",
+            "default": true
+        },
+        "show-in-browser": {
+            "name": "Enable Thumbnails",
+            "description": "Enables thumbnails in the <cy>Level Browser</c> and <cy>Search Results</c>. Doesn't affect the <cy>Level Page</c> background.",
+            "type": "bool",
+            "default": true
+        },
+        "thumbnailButton": {
+            "name": "Enable Thumbnail Button",
+            "description": "Adds a <cj>button</c> in the <cy>Level Page</c> that lets you view the thumbnail of the level you are currently on.",
+            "type": "bool",
+            "default": true
+        },
+        "lists-limit-enabled": {
+            "name": "Enable Thumbnail Limit In Lists",
+            "description": "Allows you to <cy>limit</c> the amount of thumbnails shown in level lists.\n<cy>Enable this setting if you experience lag when loading larger lists.</c>",
+            "type": "bool",
+            "default": false
+        },
+        "level-lists-limit": {
+            "name": "Limit",
+            "description": "Thumbnails won't be shown past the level with the limit as it's place in the list.",
+            "type": "int",
+            "default": 5,
+            "enable-if": "lists-limit-enabled"
+        },
+        "enable-thumbnail-taking": {
+            "name": "In-Game Thumbnail Taking",
+            "description": "Enables the ability to take thumbnails and upload them to the server from the pause menu.",
+            "type": "bool",
+            "default": false
+        },
+        "always-show-accurate-stamps": {
+            "name": "Always Show Accurate Timestamps",
+            "description": "Makes the thumbnail popup always show the accurate timestamp next to the relative one.",
+            "type": "bool",
+            "default": true
+        },
+        "cache-title": {
+            "name": "Caching",
+            "type": "title"
+        },
+        "cache-limit": {
+            "name": "Thumbnail Cache Limit",
+            "description": "The amount of thumbnails that are cached in memory (Lower this if you have a low amount of available memory).",
+            "type": "int",
+            "min": 0,
+            "default": 50
+        },
+        "file-cache-limit": {
+            "name": "File Cache Limit",
+            "description": "The amount of thumbnails that are cached on disk to avoid re-downloading them. -1 for unlimited (may use a lot of disk space).",
+            "type": "int",
+            "min": -1,
+            "default": 150
+        },
+        "api-title": {
+            "name": "API Settings",
+            "type": "title"
+        },
+        "level-thumbnails-api": {
+            "name": "Level Thumbnails API URL",
+            "description": "Base URL for the API that provides the thumbnails.",
+            "type": "string",
+            "match": "(http|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])",
+            "filter": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ:.-_/0123456789",
+            "default": "https://bytegdps.ru/thumbs"
+        },
+        "legacy-url": {
+            "name": "Legacy Host",
+            "description": "Use the ByteGDPS thumbnail server in legacy mode (plain PNG files).",
+            "type": "bool",
+            "default": true
+        },
+        "level-bg-title": {
+            "name": "Level Page Background",
+            "type": "title"
+        },
+        "level-bg": {
+            "name": "Enable Background",
+            "description": "Enable displaying thumbnails as the background in the online level screen.",
+            "type": "bool",
+            "default": true
+        },
+        "level-bg-quality": {
+            "name": "Image Quality",
+            "description": "The quality of the thumbnail used for the background (setting this to low uses the already downloaded thumbnail, having blur enabled forces this to low).",
+            "type": "string",
+            "one-of": [
+                "Low",
+                "Medium",
+                "High"
+            ],
+            "default": "High",
+            "enable-if": "level-bg && !level-bg-blur"
+        },
+        "darkening": {
+            "name": "Background Darkening",
+            "type": "int",
+            "min": 1,
+            "max": 255,
+            "enable-if": "level-bg",
+            "default": 100
+        },
+        "level-bg-blur": {
+            "name": "Enable Blur",
+            "type": "bool",
+            "enable-if": "level-bg",
+            "default": true
+        },
+        "blur-strength": {
+            "name": "Blur Radius",
+            "description": "How blurred the background will be.",
+            "type": "int",
+            "min": 1,
+            "max": 10,
+            "default": 3,
+            "enable-if": "level-bg-blur"
+        },
+        "link-account": {
+            "name": "Link Account",
+            "description": "acc link",
+            "type": "custom:link-account",
+            "default": {}
+        },
+        "mod-actions": {
+            "name": "Mod Actions",
+            "description": "mod related actions",
+            "type": "custom:mod-actions",
+            "default": {}
+        }
+    },
+    "dependencies": {
+        "geode.node-ids": ">=1.7.1",
+        "prevter.imageplus": ">=1.0.0",
+        "eclipse.eclipse-menu": {
+            "version": ">=1.9.2",
+            "required": false
+        }
+    }
+}
