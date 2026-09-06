@@ -188,7 +188,7 @@ void ThumbnailPopup::runSubmissionLogic() {
         return;
     }
 
-    StringBuffer noteEncodeBuffer;
+    StringBuffer<> noteEncodeBuffer;
     urlEncodeAppend(noteEncodeBuffer, m_extraNote);
     auto load = LoadingOverlay::create("Logging in...");
     load->show();
