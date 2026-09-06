@@ -68,7 +68,7 @@ namespace notes {
 
         auto level = playLayer->m_level;
 
-        StringBuffer sb;
+        StringBuffer<> sb;
 
         // Level Info
         sb.append("v=1;");
