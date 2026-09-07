@@ -1,3 +1,4 @@
+#include "../utils/ByteGDPS.hpp"
 #include <Geode/Geode.hpp>
 #include <Geode/modify/ProfilePage.hpp>
 #include <Geode/ui/Button.hpp>
@@ -45,6 +46,7 @@ class $modify(ProfilePageHook,ProfilePage) {
         ProfilePage::onUpdate(sender);
 
         if (!Mod::get()->getSettingValue<bool>("thumb-role-badges")) return;
+        if (!ByteGDPS::isActive()) return;
 
         auto& AM = AuthManager::get();
 
@@ -63,6 +65,7 @@ class $modify(ProfilePageHook,ProfilePage) {
         ProfilePage::loadPageFromUserInfo(score);
 
         if (!Mod::get()->getSettingValue<bool>("thumb-role-badges")) return;
+        if (!ByteGDPS::isActive()) return;
 
         if (auto role = AuthManager::get().getCachedBadgeForAccount(m_accountID)) {
             this->addBadge(role.value());

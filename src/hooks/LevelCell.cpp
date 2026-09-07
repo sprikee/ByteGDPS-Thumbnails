@@ -1,3 +1,4 @@
+#include "../utils/ByteGDPS.hpp"
 #include <Geode/modify/LevelCell.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 
@@ -177,6 +178,7 @@ class $modify(ThumbnailLevelCell, LevelCell) {
     $override void loadCustomLevelCell() {
         LevelCell::loadCustomLevelCell();
         if (!Settings::showInBrowser()) {
+        if (!ByteGDPS::isActive()) return;
             return;
         }
 

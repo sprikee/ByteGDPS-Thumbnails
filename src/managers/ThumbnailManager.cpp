@@ -80,12 +80,14 @@ ThumbnailManager& ThumbnailManager::get() {
 
 std::optional<Ref<CCTexture2D>> ThumbnailManager::getThumbnail(int32_t levelID, Quality quality) {
     auto key = getThumbnailKey(levelID, quality);
+    if (!ByteGDPS::isActive()) return std::nullopt;
     std::shared_lock lock(m_cacheMutex);
     auto it = m_thumbnailCache.find(key.view());
     if (it != m_thumbnailCache.end()) {
         this->touch(it->first);
         return it->second.texture;
     }
+    if (!ByteGDPS::isActive()) return std::nullopt;
     return std::nullopt;
 }
 

@@ -1,3 +1,4 @@
+#include "../utils/ByteGDPS.hpp"
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CommentCell.hpp>
 #include <Geode/ui/Button.hpp>
