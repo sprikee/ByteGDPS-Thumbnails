@@ -1,5 +1,6 @@
 #include <Geode/modify/LevelInfoLayer.hpp>
 #include "../managers/SettingsManager.hpp"
+#include "../utils/ByteGDPS.hpp"
 #include "../managers/ThumbnailManager.hpp"
 #include "../layers/ThumbnailPopup.hpp"
 
@@ -240,7 +241,7 @@ class $modify(ThumbnailLevelInfoLayer, LevelInfoLayer) {
         }
 
         if (auto menu = getChildByID("left-side-menu")) {
-            if (Settings::showThumbnailButton()) {
+            if (Settings::showThumbnailButton() && ByteGDPS::isActive()) {
                 auto sprite = CCSprite::createWithSpriteFrameName("thumbnailButton.png"_spr);
                 auto button = CCMenuItemExt::createSpriteExtra(sprite,[this](CCObject* sender){
                     ThumbnailPopup::create(m_level->m_levelID)->show();

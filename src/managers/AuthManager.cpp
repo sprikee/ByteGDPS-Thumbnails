@@ -1,4 +1,5 @@
 #include "AuthManager.hpp"
+#include "../utils/ByteGDPS.hpp"
 #include "ThumbnailManager.hpp"
 
 #include <Geode/Result.hpp>
@@ -173,6 +174,7 @@ AuthManager::LinkFuture AuthManager::linkAccount(std::string linkSecret) {
 }
 
 void AuthManager::initialSync() {
+    if (!ByteGDPS::isActive()) return;
     async::spawn(
         web::WebRequest()
             .userAgent(USER_AGENT)
@@ -253,6 +255,7 @@ std::optional<ThumbnailRole> AuthManager::getCachedBadgeForAccount(int accountID
 }
 
 AuthManager::BadgeFuture AuthManager::fetchBadgeForAccount(int accountID) {
+    if (!ByteGDPS::isActive()) co_return Err("Only works on ByteGDPS");
     if (m_badgeCache.contains(accountID)) {
         co_return Ok(m_badgeCache[accountID]);
     }

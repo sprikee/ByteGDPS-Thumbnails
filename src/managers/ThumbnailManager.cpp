@@ -1,5 +1,6 @@
 #include "ThumbnailManager.hpp"
 #include "SettingsManager.hpp"
+#include "../utils/ByteGDPS.hpp"
 
 #include <asp/fs.hpp>
 #include <Geode/utils/web.hpp>
@@ -89,6 +90,7 @@ std::optional<Ref<CCTexture2D>> ThumbnailManager::getThumbnail(int32_t levelID, 
 }
 
 ThumbnailManager::FetchFuture ThumbnailManager::fetchThumbnail(int32_t levelID, Quality quality, ProgressCallback progress) {
+    if (!ByteGDPS::isActive()) co_return Err("Only works on ByteGDPS");
     auto key = getThumbnailKey(levelID, quality);
 
     // check memory cache

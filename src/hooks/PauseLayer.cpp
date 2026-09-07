@@ -4,6 +4,7 @@
 
 #include "../layers/ThumbnailPopup.hpp"
 #include "../managers/SettingsManager.hpp"
+#include "../utils/ByteGDPS.hpp"
 #include "../utils/EclipseCompat.hpp"
 #include "../utils/ModNodeCompat.hpp"
 #include "../utils/NodeHider.hpp"
@@ -30,7 +31,7 @@ class $modify(LTPlayLayer, PlayLayer) {
             return false;
         }
 
-        if (!Settings::thumbnailTakingEnabled()) {
+        if (!Settings::thumbnailTakingEnabled() || !ByteGDPS::isActive()) {
             return true;
         }
 
@@ -38,7 +39,7 @@ class $modify(LTPlayLayer, PlayLayer) {
             return true;
         }
 
-        m_fields->isPendingCheck.spawn(
+        if (ByteGDPS::isActive()) m_fields->isPendingCheck.spawn(
             web::WebRequest()
                 .userAgent(USER_AGENT)
                 .get(fmt::format("{}/pending/level/{}", Settings::thumbnailAPIBaseURL(), level->m_levelID)),

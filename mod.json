@@ -169,6 +169,12 @@
             "description": "mod related actions",
             "type": "custom:mod-actions",
             "default": {}
+        },
+        "bytegdps-only": {
+            "name": "Only On ByteGDPS",
+            "description": "Automatically disable this mod when connected to vanilla or any other server.",
+            "type": "bool",
+            "default": true
         }
     },
     "dependencies": {
