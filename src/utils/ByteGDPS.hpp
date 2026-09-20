@@ -12,18 +12,24 @@
 #include <string>
 #include <string_view>
 #include <cstring>
+#include <cstdint>
 #include <algorithm>
 
 #include "ServerAPIEvents.hpp"
 
-#if !defined(_WIN32) && !defined(_WIN64)
-#include <link.h>
-#include <dlfcn.h>
-#else
+#if defined(_WIN32) || defined(_WIN64)
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
 #include <windows.h>
+#else
+#include <dlfcn.h>
+#if defined(__linux__) || defined(__ANDROID__)
+#include <link.h>
+#elif defined(__APPLE__)
+#include <mach-o/dyld.h>
+#include <mach-o/loader.h>
+#endif
 #endif
 
 namespace ByteGDPS {
@@ -50,6 +56,36 @@ inline bool containsNeedle(const char* haystack, size_t haystackSize, const char
 inline bool scanGameLibFor(const char* needle) {
 #if defined(_WIN32) || defined(GEODE_IS_WINDOWS)
     (void)needle;
+    return false;
+#elif defined(__APPLE__)
+    // Mach-O version of the ELF scan below: walk loaded images via dyld,
+    // match the game binary, scan readable segments for the needle.
+    for (uint32_t i = 0; i < _dyld_image_count(); ++i) {
+        const char* name = _dyld_get_image_name(i);
+        if (!name) continue;
+        std::string n(name);
+        if (n.find("GeometryDash") == std::string::npos) continue;
+        const auto* hdr = reinterpret_cast<const mach_header_64*>(
+            _dyld_get_image_header(i));
+        if (!hdr || hdr->magic != MH_MAGIC_64) continue;
+        intptr_t slide = _dyld_get_image_vmaddr_slide(i);
+        auto* cmd = reinterpret_cast<const load_command*>(
+            reinterpret_cast<const char*>(hdr) + sizeof(mach_header_64));
+        for (uint32_t c = 0; c < hdr->ncmds; ++c) {
+            if (cmd->cmd == LC_SEGMENT_64) {
+                auto* seg = reinterpret_cast<const segment_command_64*>(cmd);
+                if ((seg->initprot & VM_PROT_READ) && seg->vmsize > 0
+                    && seg->vmsize <= 100 * 1024 * 1024) {
+                    if (containsNeedle(
+                            reinterpret_cast<const char*>(seg->vmaddr + slide),
+                            static_cast<size_t>(seg->vmsize), needle))
+                        return true;
+                }
+            }
+            cmd = reinterpret_cast<const load_command*>(
+                reinterpret_cast<const char*>(cmd) + cmd->cmdsize);
+        }
+    }
     return false;
 #else
     struct Payload {
