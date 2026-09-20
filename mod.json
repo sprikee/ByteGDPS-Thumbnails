@@ -14,7 +14,7 @@
         "homepage": "https://bytegdps.ru",
         "source": "https://github.com/sprikee/ByteGDPS-Thumbnails"
     },
-    "description": "Level thumbnails for ByteGDPS.",
+    "description": "ByteGDPS Thumbnails — превью уровней с bytegdps.ru прямо в игре.",
     "resources": {
         "sprites": [
             "resources/noThumb.png"
